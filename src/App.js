@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import { Canvas, useLoader } from "@react-three/fiber";
+import { Environment, OrbitControls } from "@react-three/drei";
+import { Model } from "./Model";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import  './App.css'
 
-function App() {
-  return (
+const App = () => {
+  return(
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Canvas style={{
+        position: 'relative',
+        right:0,
+        height:'60%',
+        width:'100%',
+        overflow: 'hidden',
+        margin: 'auto'
+      }}>
+      <Model1 />
+      <OrbitControls />
+      <Environment preset="studio"  />
+    </Canvas>
+    <OverlayContent />
     </div>
-  );
+  )
 }
 
-export default App;
+const OverlayContent = () => {
+  return (
+    <div >
+      <h1>Hello, World!</h1>
+      <p>This is an overlay.</p>
+      <p>This is another overlay</p>
+      <button onClick={()=>console.log("clicked")}>click me</button>
+    </div>
+  );
+};
+
+const Model1 = () => {
+  const gltf = useLoader(GLTFLoader, "./test.gltf")
+  return (
+    <>
+    <primitive object={gltf.scene} scale={0.01} />
+    </>
+  )
+}
+
+export default App
+
